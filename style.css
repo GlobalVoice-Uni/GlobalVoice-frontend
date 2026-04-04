@@ -1,149 +1,167 @@
+/* Importando a fonte Inter para fidelidade visual */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  --vg-blue-vibrant: #0004FF; /* Azul principal dos botões e cabeçalho do chat */
+  --vg-blue-dark: #000B82;    /* Fundo do painel de chat */
+  --vg-blue-msg: #04003A;     /* Fundo das bolhas de mensagem */
+  --vg-blue-light: #4649FB;   /* Azul mais claro para botões secundários */
+  --vg-text-white: #FFFFFF;
+  --vg-radius: 12px;
+}
+
 body {
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #0b1e4b, #1e3a8a);
-  color: white;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 30px;
-  background: rgba(0,0,0,0.3);
-}
-
-.logo { font-weight: bold; }
-
-.actions .icon {
-  margin-right: 10px;
-  background: #1e3a8a;
-  border: none;
-  padding: 8px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.exit {
-  background: red;
-  color: white;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 8px;
-}
-
-.container {
-  display: grid;
-  grid-template-columns: 3fr 1fr;
-  gap: 20px;
-  padding: 20px;
-}
-
-.video-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
-}
-
-.card {
-  border-radius: 15px;
-  overflow: hidden;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  /* Fundo escuro apenas para visualização do protótipo */
+  background-color: #020024; 
+  height: 100vh;
   position: relative;
-  background: #1e3a8a;
 }
 
-.card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+/* --- COMPONENTE 1: BARRA INFERIOR (VOZGLOBAL TOOLBAR) --- */
+.vg-toolbar {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 1100px;
+  height: 60px;
+  background-color: var(--vg-blue-vibrant);
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  z-index: 9999;
 }
 
-.info {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-  background: rgba(0,0,0,0.6);
-  padding: 6px 12px;
-  border-radius: 8px;
+.vg-btn {
+  height: 42px;
+  background-color: var(--vg-blue-light);
+  border: none;
+  border-radius: 21px;
+  color: var(--vg-text-white);
+  padding: 0 18px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s;
 }
 
-.status {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  padding: 5px 10px;
-  border-radius: 8px;
-  font-size: 12px;
+.vg-btn:hover {
+  background-color: #5a5dfc;
 }
 
-.speaking { background: #22c55e; }
-.listening { background: #3b82f6; }
+.vg-btn.active {
+  background-color: #0E00D9;
+}
 
-.chat {
+.vg-btn.mic {
+  width: 42px;
+  padding: 0;
+  justify-content: center;
+}
+
+/* --- COMPONENTE 2: BOX DE CHAT (VOZGLOBAL CHAT) --- */
+.vg-chat-container {
+  position: fixed;
+  bottom: 100px; /* Acima da barra inferior */
+  right: 30px;
+  width: 380px;
+  height: 500px;
+  background-color: var(--vg-blue-dark);
+  border-radius: var(--vg-radius);
   display: flex;
   flex-direction: column;
-  background: rgba(0,0,0,0.3);
-  border-radius: 15px;
-  padding: 10px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  z-index: 9998;
 }
 
-.chat-header {
-  font-weight: bold;
-  margin-bottom: 10px;
+.vg-chat-header {
+  height: 55px;
+  background-color: var(--vg-blue-vibrant);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 12px;
 }
 
-.chat-messages {
+.vg-chat-header span {
+  color: var(--vg-text-white);
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.vg-chat-messages {
   flex: 1;
+  padding: 15px;
   overflow-y: auto;
-}
-
-.message {
-  background: #1e3a8a;
-  padding: 10px;
-  border-radius: 10px;
-  margin-bottom: 10px;
-}
-
-.translation {
-  font-size: 12px;
-  opacity: 0.8;
-}
-
-.input {
   display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.input input {
+.vg-message {
+  background-color: var(--vg-blue-msg);
+  border-radius: 10px;
+  padding: 12px;
+  color: var(--vg-text-white);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.vg-message .sender {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 4px;
+  font-size: 13px;
+}
+
+.vg-message .translation {
+  display: block;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: #a0a0ff;
+  font-style: italic;
+}
+
+.vg-chat-input-area {
+  padding: 15px;
+  background-color: var(--vg-blue-vibrant);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.vg-chat-input {
   flex: 1;
-  padding: 10px;
-  border-radius: 8px;
+  background: transparent;
   border: none;
-}
-
-.input button {
-  margin-left: 5px;
-  padding: 10px;
-  border-radius: 8px;
-  border: none;
-  background: #3b82f6;
   color: white;
+  font-size: 14px;
+  outline: none;
 }
 
-.footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  padding: 10px;
-  background: rgba(0,0,0,0.4);
+.vg-chat-input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
 }
 
-.btn {
-  background: #1e3a8a;
+.vg-send-btn {
+  background: transparent;
   border: none;
-  padding: 10px 15px;
-  border-radius: 10px;
   cursor: pointer;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
