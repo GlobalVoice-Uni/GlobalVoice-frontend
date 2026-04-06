@@ -1,107 +1,147 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // --- SELETORES DE ELEMENTOS ---
-    const chatContainer = document.querySelector('.vg-chat-container');
-    const chatMessages = document.querySelector('.vg-chat-messages');
-    const chatInput = document.querySelector('.vg-chat-input');
-    const sendBtn = document.querySelector('.vg-send-btn');
-    const toolbarButtons = document.querySelectorAll('.vg-btn');
-    const chatToggleBtn = document.querySelector('.vg-btn[title="Chat"]');
+(function() {
+  const form = document.getElementById('loginForm');
+  const feedbackDiv = document.getElementById('formFeedback');
+  const emailInput = document.getElementById('email');
+  const passwordInput = document.getElementById('password');
+  const rememberCheck = document.getElementById('remember');
 
-    // --- FUNÇÕES DE CHAT ---
-
-    // Função para adicionar uma nova mensagem ao chat
-    function addMessage(sender, text, translation = null) {
-        const messageDiv = document.createElement('div');
-        messageDiv.className = 'vg-message';
-        
-        let messageHTML = `
-            <span class="sender">${sender}:</span>
-            <p>${text}</p>
-        `;
-
-        if (translation) {
-            messageHTML += `<span class="translation">${translation}</span>`;
-        }
-
-        messageDiv.innerHTML = messageHTML;
-        chatMessages.appendChild(messageDiv);
-        
-        // Scroll automático para a última mensagem
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+  // Helper para mostrar mensagem de erro/sucesso simulada
+  function showMessage(msg, isError = true) {
+    feedbackDiv.textContent = msg;
+    feedbackDiv.style.color = isError ? '#d14545' : '#2c6e4f';
+    if (!isError) {
+      setTimeout(() => {
+        if (feedbackDiv.textContent === msg) feedbackDiv.textContent = '';
+      }, 2500);
+    } else {
+      setTimeout(() => {
+        if (feedbackDiv.textContent === msg) feedbackDiv.textContent = '';
+      }, 3000);
     }
+  }
 
-    // Função para enviar mensagem
-    function handleSendMessage() {
-        const text = chatInput.value.trim();
-        if (text !== "") {
-            // Adiciona a mensagem do usuário (simulando tradução automática)
-            addMessage("Você (Português)", text, `EN: ${simulateTranslation(text)}`);
-            chatInput.value = "";
-            
-            // Simula uma resposta automática após 1.5 segundos
-            setTimeout(() => {
-                addMessage("Sistema", "Tradução processada com sucesso.", "EN: Translation processed successfully.");
-            }, 1500);
-        }
+  // Carregar "lembrar email" se existir no localStorage (simulação de persistência)
+  function loadRememberedEmail() {
+    const savedEmail = localStorage.getItem('globalvoice_remembered_email');
+    const savedRemember = localStorage.getItem('globalvoice_remember_check');
+    if (savedRemember === 'true' && savedEmail) {
+      emailInput.value = savedEmail;
+      rememberCheck.checked = true;
+    } else {
+      rememberCheck.checked = false;
     }
+  }
 
-    // Simulação simples de tradução (apenas para demonstração visual)
-    function simulateTranslation(text) {
-        const translations = {
-            "olá": "hello",
-            "bom dia": "good morning",
-            "como vai?": "how are you?",
-            "reunião": "meeting",
-            "projeto": "project"
-        };
-        
-        const lowerText = text.toLowerCase();
-        return translations[lowerText] || "[Simulated Translation]";
+  // Salvar preferência de "lembrar-me"
+  function persistRemember(email, rememberMe) {
+    if (rememberMe && email) {
+      localStorage.setItem('globalvoice_remembered_email', email);
+      localStorage.setItem('globalvoice_remember_check', 'true');
+    } else {
+      localStorage.removeItem('globalvoice_remembered_email');
+      localStorage.setItem('globalvoice_remember_check', 'false');
     }
+  }
 
-    // Eventos de envio
-    sendBtn.addEventListener('click', handleSendMessage);
-    chatInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') handleSendMessage();
-    });
+  // validação simples front-end
+  function validateForm(email, password) {
+    if (!email.trim()) {
+      showMessage('Por favor, informe o e-mail.', true);
+      emailInput.focus();
+      return false;
+    }
+    if (!email.includes('@') || !email.includes('.')) {
+      showMessage('Insira um e-mail válido (ex: nome@dominio.com).', true);
+      emailInput.focus();
+      return false;
+    }
+    if (!password.trim()) {
+      showMessage('A senha não pode estar vazia.', true);
+      passwordInput.focus();
+      return false;
+    }
+    if (password.length < 4) {
+      showMessage('A senha deve ter pelo menos 4 caracteres (apenas para demonstração).', true);
+      passwordInput.focus();
+      return false;
+    }
+    return true;
+  }
 
-    // --- FUNÇÕES DA BARRA DE FERRAMENTAS ---
-
-    toolbarButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            // Alterna a classe 'active' para feedback visual
-            // Exceto para o chat, que tem lógica própria de visibilidade
-            if (btn.title !== "Chat") {
-                btn.classList.toggle('active');
-                
-                // Feedback no console para simular ação
-                const status = btn.classList.contains('active') ? "Ativado" : "Desativado";
-                console.log(`${btn.title}: ${status}`);
-            }
-        });
-    });
-
-    // Lógica específica para abrir/fechar o Chat
-    chatToggleBtn.addEventListener('click', () => {
-        const isVisible = chatContainer.style.display !== 'none';
-        
-        if (isVisible) {
-            chatContainer.style.display = 'none';
-            chatToggleBtn.classList.remove('active');
+  // Simular requisição de login (integração futura com backend real)
+  function fakeLoginRequest(email, password, remember) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        if (email === 'demo@globalvoice.com' || (email.includes('@') && password.length >= 4)) {
+          resolve({ success: true, message: 'Login bem-sucedido! Redirecionando...' });
         } else {
-            chatContainer.style.display = 'flex';
-            chatToggleBtn.classList.add('active');
+          resolve({ success: false, message: 'Credenciais inválidas. Tente demo@globalvoice.com' });
         }
+      }, 800);
     });
+  }
 
-    // Inicialização: Garante que o chat comece aberto e o botão ativo
-    chatContainer.style.display = 'flex';
-    chatToggleBtn.classList.add('active');
+  // Evento de submit
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-    // Simulação de status de microfone no console
-    const micBtn = document.querySelector('.vg-btn.mic');
-    micBtn.addEventListener('click', () => {
-        const isMuted = !micBtn.classList.contains('active');
-        console.log(isMuted ? "Microfone Mutado" : "Microfone Ativo");
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+    const remember = rememberCheck.checked;
+
+    if (!validateForm(email, password)) return;
+
+    const btn = form.querySelector('.login-btn');
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Entrando...';
+    showMessage('Verificando credenciais...', false);
+
+    try {
+      const result = await fakeLoginRequest(email, password, remember);
+      if (result.success) {
+        persistRemember(email, remember);
+        showMessage(result.message, false);
+        setTimeout(() => {
+          alert('✅ Demonstração: redirecionamento para o painel GlobalVoice.\n(integração com backend em desenvolvimento)');
+          btn.disabled = false;
+          btn.textContent = originalText;
+        }, 1200);
+      } else {
+        persistRemember(email, false);
+        showMessage(result.message, true);
+        btn.disabled = false;
+        btn.textContent = originalText;
+        passwordInput.value = '';
+        passwordInput.focus();
+      }
+    } catch (err) {
+      showMessage('Erro de conexão. Tente novamente.', true);
+      btn.disabled = false;
+      btn.textContent = originalText;
+    }
+  });
+
+  // link "Esqueceu a senha" (simulação de recuperação)
+  const forgotLink = document.getElementById('forgotPasswordLink');
+  if (forgotLink) {
+    forgotLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      alert('🔐 Funcionalidade de recuperação de senha.\nEm breve integração com e-mail de redefinição.');
     });
-});
+  }
+
+  // Carregar email lembrado ao iniciar a página
+  loadRememberedEmail();
+
+  // pequeno efeito para foco visual
+  const inputs = document.querySelectorAll('input');
+  inputs.forEach(input => {
+    input.addEventListener('focus', () => {
+      input.parentElement?.classList.add('focused');
+    });
+    input.addEventListener('blur', () => {
+      input.parentElement?.classList.remove('focused');
+    });
+  });
+})();

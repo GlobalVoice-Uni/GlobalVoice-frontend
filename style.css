@@ -1,167 +1,188 @@
-/* Importando a fonte Inter para fidelidade visual */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
-
-:root {
-  --vg-blue-vibrant: #0004FF; /* Azul principal dos botões e cabeçalho do chat */
-  --vg-blue-dark: #000B82;    /* Fundo do painel de chat */
-  --vg-blue-msg: #04003A;     /* Fundo das bolhas de mensagem */
-  --vg-blue-light: #4649FB;   /* Azul mais claro para botões secundários */
-  --vg-text-white: #FFFFFF;
-  --vg-radius: 12px;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Inter', sans-serif;
-  /* Fundo escuro apenas para visualização do protótipo */
-  background-color: #020024; 
-  height: 100vh;
-  position: relative;
-}
-
-/* --- COMPONENTE 1: BARRA INFERIOR (VOZGLOBAL TOOLBAR) --- */
-.vg-toolbar {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 90%;
-  max-width: 1100px;
-  height: 60px;
-  background-color: var(--vg-blue-vibrant);
-  border-radius: 30px;
+  background: linear-gradient(135deg, #0b1120 0%, #19233c 100%);
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 0 20px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-  z-index: 9999;
+  padding: 1.5rem;
 }
 
-.vg-btn {
-  height: 42px;
-  background-color: var(--vg-blue-light);
-  border: none;
-  border-radius: 21px;
-  color: var(--vg-text-white);
-  padding: 0 18px;
-  font-size: 14px;
+/* card principal – proporção próxima à referência (729x737) mas responsivo */
+.login-card {
+  max-width: 460px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(0px);
+  border-radius: 2.5rem;
+  box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.35), 0 8px 18px rgba(0, 0, 0, 0.1);
+  padding: 2.2rem 2rem 2.5rem;
+  transition: all 0.2s ease;
+}
+
+/* logo / título estilizado */
+.login-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.login-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(120deg, #1f2b48, #2c3e6d);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  letter-spacing: -0.3px;
+}
+
+.login-header .sub {
+  color: #5a687c;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
   font-weight: 500;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: background-color 0.2s;
 }
 
-.vg-btn:hover {
-  background-color: #5a5dfc;
-}
-
-.vg-btn.active {
-  background-color: #0E00D9;
-}
-
-.vg-btn.mic {
-  width: 42px;
-  padding: 0;
-  justify-content: center;
-}
-
-/* --- COMPONENTE 2: BOX DE CHAT (VOZGLOBAL CHAT) --- */
-.vg-chat-container {
-  position: fixed;
-  bottom: 100px; /* Acima da barra inferior */
-  right: 30px;
-  width: 380px;
-  height: 500px;
-  background-color: var(--vg-blue-dark);
-  border-radius: var(--vg-radius);
+/* campos do formulário */
+.input-group {
+  margin-bottom: 1.5rem;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
-  overflow: hidden;
-  z-index: 9998;
 }
 
-.vg-chat-header {
-  height: 55px;
-  background-color: var(--vg-blue-vibrant);
-  display: flex;
-  align-items: center;
-  padding: 0 20px;
-  gap: 12px;
-}
-
-.vg-chat-header span {
-  color: var(--vg-text-white);
+.input-group label {
+  font-size: 0.85rem;
   font-weight: 600;
-  font-size: 16px;
+  color: #1f2a44;
+  margin-bottom: 0.4rem;
+  letter-spacing: -0.2px;
 }
 
-.vg-chat-messages {
-  flex: 1;
-  padding: 15px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.vg-message {
-  background-color: var(--vg-blue-msg);
-  border-radius: 10px;
-  padding: 12px;
-  color: var(--vg-text-white);
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.vg-message .sender {
-  font-weight: 600;
-  display: block;
-  margin-bottom: 4px;
-  font-size: 13px;
-}
-
-.vg-message .translation {
-  display: block;
-  margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  color: #a0a0ff;
-  font-style: italic;
-}
-
-.vg-chat-input-area {
-  padding: 15px;
-  background-color: var(--vg-blue-vibrant);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.vg-chat-input {
-  flex: 1;
-  background: transparent;
-  border: none;
-  color: white;
-  font-size: 14px;
+.input-group input {
+  padding: 0.9rem 1rem;
+  border-radius: 1.25rem;
+  border: 1.5px solid #e2e8f0;
+  background-color: #ffffff;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.2s;
   outline: none;
+  color: #0f172a;
 }
 
-.vg-chat-input::placeholder {
-  color: rgba(255, 255, 255, 0.7);
+.input-group input:focus {
+  border-color: #3b6ea0;
+  box-shadow: 0 0 0 3px rgba(59, 110, 160, 0.2);
 }
 
-.vg-send-btn {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  color: white;
+/* opções adicionais (remember + forgot) */
+.options-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.5rem 0 1.8rem 0;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.checkbox-label {
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 0.55rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #2c3e5c;
+  font-weight: 500;
+}
+
+.checkbox-label input {
+  width: 1.1rem;
+  height: 1.1rem;
+  cursor: pointer;
+  accent-color: #2c5a7a;
+}
+
+.forgot-link {
+  color: #2c5a7a;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.forgot-link:hover {
+  color: #0f2b44;
+  text-decoration: underline;
+}
+
+/* botão principal */
+.login-btn {
+  width: 100%;
+  background: #1f2f4f;
+  border: none;
+  padding: 0.9rem;
+  border-radius: 2rem;
+  font-weight: 700;
+  font-size: 1rem;
+  color: white;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.25s, transform 0.1s;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 6px 14px rgba(28, 45, 75, 0.25);
+}
+
+.login-btn:hover {
+  background: #2c456e;
+  transform: translateY(-1px);
+}
+
+.login-btn:active {
+  transform: translateY(1px);
+}
+
+/* rodapé com mensagem de erro ou demo (opcional) */
+.demo-note {
+  text-align: center;
+  font-size: 0.75rem;
+  color: #7c8aa2;
+  margin-top: 1.2rem;
+  border-top: 1px solid #edf2f7;
+  padding-top: 1.2rem;
+}
+
+/* responsividade */
+@media (max-width: 500px) {
+  .login-card {
+    padding: 1.8rem 1.5rem 2rem;
+  }
+  .login-header h1 {
+    font-size: 1.8rem;
+  }
+  .options-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* validação visual simples */
+.error-message {
+  color: #d14545;
+  font-size: 0.75rem;
+  margin-top: 0.3rem;
+  margin-left: 0.5rem;
+  display: none;
+}
+
+/* estilo para o card parecer com a referência (proporção) */
+@media (min-width: 760px) {
+  .login-card {
+    max-width: 440px;
+  }
 }
