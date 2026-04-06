@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         messageDiv.innerHTML = messageHTML;
         chatMessages.appendChild(messageDiv);
         
-        // Scroll automático para a última mensagem
+        // Scroll automatico para a ultima mensagem
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
@@ -34,18 +34,18 @@ document.addEventListener('DOMContentLoaded', () => {
     function handleSendMessage() {
         const text = chatInput.value.trim();
         if (text !== "") {
-            // Adiciona a mensagem do usuário (simulando tradução automática)
+            // Adiciona a mensagem do usuário (pra simular tradução automática)
             addMessage("Você (Português)", text, `EN: ${simulateTranslation(text)}`);
             chatInput.value = "";
             
-            // Simula uma resposta automática após 1.5 segundos
+            // Simula uma resposta automática (leva 1.5 segundos) 
             setTimeout(() => {
                 addMessage("Sistema", "Tradução processada com sucesso.", "EN: Translation processed successfully.");
             }, 1500);
         }
     }
 
-    // Simulação simples de tradução (apenas para demonstração visual)
+    // Simulação simples de tradução 
     function simulateTranslation(text) {
         const translations = {
             "olá": "hello",
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Lógica específica para abrir/fechar o Chat
+    // Lógica específica para abrir e fechar o Chat
     chatToggleBtn.addEventListener('click', () => {
         const isVisible = chatContainer.style.display !== 'none';
         
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Inicialização: Garante que o chat comece aberto e o botão ativo
+    // Garante que o chat comece aberto e o botão ativo
     chatContainer.style.display = 'flex';
     chatToggleBtn.classList.add('active');
 

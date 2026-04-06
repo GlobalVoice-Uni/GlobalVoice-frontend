@@ -1,4 +1,3 @@
-/* Importando a fonte Inter para fidelidade visual */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
 :root {
@@ -20,7 +19,7 @@ body {
   position: relative;
 }
 
-/* --- COMPONENTE 1: BARRA INFERIOR (VOZGLOBAL TOOLBAR) --- */
+/* --- COMPONENTE 1: BARRA INFERIOR (GlobalVoice, toolbar) --- */
 .vg-toolbar {
   position: fixed;
   bottom: 20px;
@@ -70,7 +69,7 @@ body {
   justify-content: center;
 }
 
-/* --- COMPONENTE 2: BOX DE CHAT (VOZGLOBAL CHAT) --- */
+/* --- COMPONENTE 2: BOX DE CHAT (GlobalVoice, chat) --- */
 .vg-chat-container {
   position: fixed;
   bottom: 100px; /* Acima da barra inferior */
